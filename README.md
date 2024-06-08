@@ -1,7 +1,9 @@
 Ping Pong Game in p5.js
+
 This is a simple ping pong game developed using the p5.js library. The game consists of hitting a ball with a racket, controlled by the player, in order to prevent the ball from going over the racket and scoring points by making the ball go over the opponent's racket.
 
 Main Features
+
 Variables and Initial Settings
 Ball Variables:
 xbolinha, ybolinha: Coordinates of the ball on the screen.
