@@ -1,55 +1,55 @@
-README - Jogo de Ping Pong em p5.js
-Este é um jogo simples de ping pong desenvolvido utilizando a biblioteca p5.js. O jogo consiste em rebater uma bola com uma raquete, controlada pelo jogador, de modo a evitar que a bola ultrapasse a raquete e marcar pontos ao fazer com que a bola ultrapasse a raquete do oponente.
+Ping Pong Game in p5.js
+This is a simple ping pong game developed using the p5.js library. The game consists of hitting a ball with a racket, controlled by the player, in order to prevent the ball from going over the racket and scoring points by making the ball go over the opponent's racket.
 
-Funcionalidades Principais
-Variáveis e Configurações Iniciais
-Variáveis da Bola:
-xbolinha, ybolinha: Coordenadas da bola na tela.
-diametro, raio: Dimensões da bola.
-Velocidade da Bola:
-xvelocidade, yvelocidade: Determinam a velocidade da bola nos eixos x e y.
-Variáveis da Raquete do Oponente:
-xraqueteoponente, yraqueteoponente: Coordenadas da raquete do oponente.
-comprimentoraqueteop, raquetealturaop: Dimensões da raquete do oponente.
-velocidadeyoponente, chancedeerrar: Parâmetros para o movimento automático e probabilidade de erro do oponente.
-Variáveis da Raquete do Jogador:
-xraquete, yraquete: Coordenadas da raquete controlada pelo jogador.
-comprimentoraquete, raquetealtura: Dimensões da raquete do jogador.
-Placar do Jogo:
-meuspontos, pontosdooponente: Armazenam os pontos do jogador e do oponente.
-Sons
-Sons Carregados:
-raquetada: Som reproduzido quando a bola colide com uma raquete.
-ponto: Som reproduzido ao marcar um ponto.
-trilha: Trilha sonora de fundo durante o jogo.
-Funções Principais
+Main Features
+Variables and Initial Settings
+Ball Variables:
+xbolinha, ybolinha: Coordinates of the ball on the screen.
+diameter, radius: Dimensions of the ball.
+Ball Speed:
+xvelocity, yvelocity: Determine the speed of the ball on the x and y axes.
+Opponent Racket Variables:
+xopponent racket, yopponent racket: Coordinates of the opponent's racket.
+racketlengthop, racketheightop: Dimensions of the opponent's racket.
+opponent speed, chance of error: Parameters for the opponent's automatic movement and probability of error.
+Player Racket Variables:
+xracket, yracket: Coordinates of the racket controlled by the player.
+racket length, racket height: Dimensions of the player's racket.
+Game Score:
+mypoints, opponent's points: Store the player's and opponent's points.
+Sounds
+Loaded Sounds:
+racket: Sound played when the ball collides with a racket.
+point: Sound played when marking a point.
+soundtrack: Background soundtrack during the game.
+Main Functions
 Setup:
 
-Configura o ambiente do jogo, define o tamanho da tela e inicia a trilha sonora.
-Loop Principal (Draw):
+Configures the game environment, sets the screen size and starts the soundtrack.
+Main Loop (Draw):
 
-Desenha e atualiza os elementos do jogo (bola, raquetes, placar).
-Detecta colisões e atualiza a posição dos elementos.
-Movimentação:
+Design and update game elements (ball, rackets, scoreboard).
+Detects collisions and updates the position of elements.
+Movement:
 
-Permite ao jogador mover sua raquete para cima e para baixo.
-Colisão:
+Allows the player to move his racket up and down.
+Collision:
 
-Verifica se a bola colide com as raquetes do jogador e do oponente.
-Pontuação:
+Checks whether the ball collides with the player's and opponent's rackets.
+Punctuation:
 
-Atualiza o placar quando um ponto é marcado.
-Limitação de Movimento:
+Updates the scoreboard when a point is scored.
+Movement Limitation:
 
-Impede que as raquetes saiam da tela.
-Como Jogar
-Use as setas do teclado para mover a raquete para cima e para baixo.
-Rebata a bola com a raquete para evitar que ela ultrapasse a raquete.
-Marque pontos ao fazer com que a bola ultrapasse a raquete do oponente.
-Ganha quem marcar mais pontos.
-Divirta-se jogando ping pong!
+Prevents rackets from leaving the screen.
+How to play
+Use the arrow keys to move the racket up and down.
+Hit the ball with the racket to prevent it from going over the racket.
+Score points by getting the ball past your opponent's racket.
+Whoever scores the most points wins.
+Have fun playing ping pong!
 
-Instalação e Execução
-Clone ou faça o download deste repositório.
-Abra o arquivo index.html em um navegador web compatível com a biblioteca p5.js.
-Desfrute do jogo!
+Installation and Execution
+Clone or download this repository.
+Open the index.html file in a web browser compatible with the p5.js library.
+Enjoy the game!
