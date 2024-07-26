@@ -1,170 +1,347 @@
-//Variáveis bolinha
+// Variáveis bolinha
 let xbolinha = 300;
 let ybolinha = 200;
 let diametro = 27;
-let raio = diametro/2;
+let raio = diametro / 2;
 
-//Velocidade da bolinha
+// Dificuldade e finalpoint
+let nivel = "facil"; // Pode ser "facil", "medio" ou "dificil"
+let telaInicial = true;
+let pontosParaVitoria = 3; // Define 3 pontos para vencer
+let pontoMarcado = false;
+let jogoTerminou = false;
+
+// Velocidade da bolinha
 let xvelocidade = 8;
 let yvelocidade = 8;
 
-// variavés do oponente.
-let xraqueteoponente = 583
-let yraqueteoponente = 158
-let comprimentoraqueteop = 11
-let raquetealturaop = 90
+// Variáveis do oponente
+let xraqueteoponente = 583;
+let yraqueteoponente = 158;
+let comprimentoraqueteop = 11;
+let raquetealturaop = 90;
 let velocidadeyoponente;
 let chancedeerrar = 0;
 
-//Variáveis raquete
-let xraquete = 6
-let yraquete = 160
+// Variáveis raquete
+let xraquete = 6;
+let yraquete = 160;
 let comprimentoraquete = 11;
-let raquetealtura = 90
-colidiu = false;
+let raquetealtura = 90;
+let colidiu = false;
 
-//Placar do Jogo
+// Placar do Jogo
 let meuspontos = 0;
 let pontosdooponente = 0;
 
-//SOM
+// SOM
 let raquetada;
 let ponto;
 let trilha;
 
-function preload(){
+function preload() {
   trilha = loadSound("trilha.mp3");
   ponto = loadSound("ponto.mp3");
   raquetada = loadSound("raquetada.mp3");
 }
 
 function setup() {
-  createCanvas(600,400);
+  createCanvas(600, 400);
   trilha.loop();
 }
-//Ativando o funcion
+
 function draw() {
-background(0);
-mostrabolinha();
-mostraraquete(xraquete,yraquete);
-movimentobolinha();
-colisaobolinha();
-movimentoraquete();
-//colisaoraquete();
-mostraraquete(xraqueteoponente,yraqueteoponente);
-movimentoraqueteop();
-//movimentaraqueteoponentecasual();
-colisaoraquetebiblioteca(xraquete,yraquete);
-colisaoraquetebiblioteca(xraqueteoponente,yraqueteoponente);
-placar();
-marcaponto();
-bolinhaNaoFicaPresa();
-}
-function mostrabolinha(){
-circle (xbolinha,ybolinha,diametro);
-}
-function mostraraquete(){
-rect(xraquete,yraquete,comprimentoraquete,raquetealtura);
-}
-function movimentobolinha(){
-xbolinha += xvelocidade;
-ybolinha += yvelocidade;
-}
-function colisaobolinha(){
-if(xbolinha + raio > width||
-xbolinha - raio < 0){
-xvelocidade *= -1;
-}
-if(ybolinha + raio > height || ybolinha - raio < 0){
-yvelocidade *= -1;
-}
-}
-function movimentoraquete(){
-  if(keyIsDown(UP_ARROW)){
-yraquete -= 10;
+  if (telaInicial) {
+    exibirTelaInicial();
+  } else if (jogoTerminou) {
+    exibirFimDeJogo();
+  } else {
+    background(0);
+    mostrabolinha();
+    mostraraquete(xraquete, yraquete);
+    movimentobolinha();
+    colisaobolinha();
+    movimentoraquete();
+    mostraraquete(xraqueteoponente, yraqueteoponente);
+    movimentoraqueteop();
+    colisaoraquetebiblioteca(xraquete, yraquete);
+    colisaoraquetebiblioteca(xraqueteoponente, yraqueteoponente);
+    placar();
+    marcaponto();
+    bolinhaNaoFicaPresa();
   }
-  if(keyIsDown(DOWN_ARROW)){
-yraquete += 10;
+}
+
+function mostrabolinha() {
+  circle(xbolinha, ybolinha, diametro);
+}
+
+function mostraraquete(x, y) {
+  rect(x, y, comprimentoraquete, raquetealtura);
+}
+
+function movimentobolinha() {
+  xbolinha += xvelocidade;
+  ybolinha += yvelocidade;
+}
+function colisaobolinha() {
+  // Colisão com a raquete do oponente
+  if (
+    xbolinha + raio > xraqueteoponente &&
+    xbolinha - raio < xraqueteoponente + comprimentoraqueteop
+  ) {
+    if (
+      ybolinha + raio > yraqueteoponente &&
+      ybolinha - raio < yraqueteoponente + raquetealturaop
+    ) {
+      xbolinha = xraqueteoponente - raio; // Ajusta a posição da bolinha
+      xvelocidade *= -1;
+      raquetada.play();
+    }
+  }
+
+  // Colisão com a raquete do jogador
+  if (
+    xbolinha - raio < xraquete + comprimentoraquete &&
+    xbolinha + raio > xraquete
+  ) {
+    if (
+      ybolinha + raio > yraquete &&
+      ybolinha - raio < yraquete + raquetealtura
+    ) {
+      xbolinha = xraquete + comprimentoraquete + raio; // Ajusta a posição da bolinha
+      xvelocidade *= -1;
+      raquetada.play();
+    }
+  }
+
+  // Colisão com as paredes
+  if (xbolinha + raio > width || xbolinha - raio < 0) {
+    xvelocidade *= -1;
+  }
+  if (ybolinha + raio > height || ybolinha - raio < 0) {
+    yvelocidade *= -1;
+  }
+  pontoMarcado = false;
+}
+function movimentoraquete() {
+  if (keyIsDown(UP_ARROW)) {
+    yraquete -= 10;
+  }
+  if (keyIsDown(DOWN_ARROW)) {
+    yraquete += 10;
   }
   yraquete = constrain(yraquete, 0, 310);
 }
-function colisaoraquete(){
-  if(xbolinha - raio < xraquete + comprimentoraquete && ybolinha - raio < yraquete + raquetealtura &&
-ybolinha + raio > yraquete){
-xvelocidade *= - 1;
-  raquetada.play();
+
+function colisaoraquetebiblioteca(x, y) {
+  colidiu = collideRectCircle(
+    x,
+    y,
+    comprimentoraquete,
+    raquetealtura,
+    xbolinha,
+    ybolinha,
+    raio
+  );
+  if (colidiu) {
+    xvelocidade *= -1;
+    raquetada.play();
   }
-}
-function colisaoraquetebiblioteca(){
-  colidiu=
-collideRectCircle(xraquete,yraquete,comprimentoraquete,raquetealtura,xbolinha,ybolinha,raio);
-  if (colidiu){xvelocidade *=-1;
-  raquetada.play();
-  }
-}
-function colisaoraquetebiblioteca(x,y){
-  colidiu =
-collideRectCircle(x,y,comprimentoraquete,raquetealtura,xbolinha,ybolinha,raio);
-  if (colidiu){xvelocidade *=-1;
-  raquetada.play();
-  }
-}
-function mostraraquete(x,y){
-rect(x,y,comprimentoraqueteop,raquetealturaop);
 }
 
-function movimentoraqueteop(){
-  velocidadeyoponente = ybolinha - yraqueteoponente - comprimentoraquete/2 - 30;
-  yraqueteoponente += velocidadeyoponente + chancedeerrar
-  calculachancedeerrar()
-  yraqueteoponente = constrain(yraqueteoponente, 0, 310);
+function movimentoraqueteop() {
+  let multiplicadorVelocidade = 0.8;
+
+  // Ajusta multiplicador de velocidade de acordo com o nível
+  if (nivel === "medio") {
+    multiplicadorVelocidade = 1.2; // Menor valor para "medio"
+  } else if (nivel === "dificil") {
+    multiplicadorVelocidade = 1.5; // Menor valor para "dificil"
+  }
+
+  velocidadeyoponente =
+    (ybolinha - yraqueteoponente - comprimentoraqueteop / 2 - 20) * // Reduzido de -30 para -20
+    multiplicadorVelocidade;
+  yraqueteoponente += velocidadeyoponente + chancedeerrar;
+  calculachancedeerrar();
+  yraqueteoponente = constrain(yraqueteoponente, 0, height - raquetealturaop);
 }
-function calculachancedeerrar(){
-  if(pontosdooponente >= meuspontos){
-    chancedeerrar +=1
-    if(chancedeerrar >=39){chancedeerrar = 40
+
+function calculachancedeerrar() {
+  if (pontosdooponente >= meuspontos) {
+    chancedeerrar += 4; // Reduzido de 6 para 4
+    if (chancedeerrar >= 41) {
+      chancedeerrar = 41; // Ajustado para 41
     }
   } else {
-    chancedeerrar -=1
-    if(chancedeerrar<=35){
-    chancedeerarrar = 35
-    }  
+    chancedeerrar -= 1; // Reduzido de 2 para 1
+    if (chancedeerrar <= 34) {
+      chancedeerrar = 34;
+    }
   }
 }
-function placar(){
+
+function placar() {
   stroke(255);
   textAlign(CENTER);
   textSize(20);
-  fill(color(32,178,170));
-  rect(150,15,40,20);
+  fill(color(32, 178, 170));
+  rect(150, 15, 42, 20);
   fill(300);
-  text(meuspontos,170,32);
-  fill(color(32,178,170));
-  rect(440,15,40,20);
+  text(meuspontos, 170, 28.5);
+  fill(color(32, 178, 170));
+  rect(440, 15, 42, 20);
   fill(300);
-  text(pontosdooponente,460,32);
+  text(pontosdooponente, 460, 28.5);
+
+  if (meuspontos >= pontosParaVitoria || pontosdooponente >= pontosParaVitoria) {
+    trilha.stop(); // Para a trilha sonora ao finalizar o jogo
+    fill(255);
+    textSize(32);
+    textAlign(CENTER, CENTER);
+    let vencedor = meuspontos >= pontosParaVitoria ? "Você venceu!" : "Oponente venceu!";
+    text(vencedor, width / 2, height / 2);
+
+    textSize(20);
+    text("Pressione R para Retry", width / 2, height / 2 + 40);
+    text("Pressione M para Menu Inicial", width / 2, height / 2 + 80);
+
+    jogoTerminou = true; // Define que o jogo terminou
+  }
 }
-function marcaponto(){
-  if(xbolinha > 586){
+
+function marcaponto() {
+  if (xbolinha > 583 && !pontoMarcado) {
     meuspontos += 1;
     ponto.play();
+    pontoMarcado = true; // Marca o ponto para evitar contagem repetida
+  }
+  if (xbolinha < 13) {
+    pontosdooponente += 1;
+    ponto.play();
+    pontoMarcado = true; // Marca o ponto para evitar contagem repetida
+  }
 
-  }
-  if(xbolinha < 13){pontosdooponente += 1;
-  ponto.play();
+  if (meuspontos >= pontosParaVitoria || pontosdooponente >= pontosParaVitoria) {
+    trilha.stop();
+    fill(255);
+    textSize(32);
+    textAlign(CENTER, CENTER);
+    let vencedor = meuspontos >= pontosParaVitoria ? "Você venceu!" : "Oponente venceu!";
+    text(vencedor, width / 2, height / 2);
+
+    textSize(20);
+    text("Pressione R para Retry", width / 2, height / 2 + 40);
+    text("Pressione M para Menu Inicial", width / 2, height / 2 + 80);
+
+    jogoTerminou = true; // Define que o jogo terminou
   }
 }
-function movimentaraqueteoponentecasual(){
-  if(keyIsDown(87)){
-yraqueteoponente -= 10;
+
+function bolinhaNaoFicaPresa() {
+  if (xbolinha - raio < 0) {
+    xbolinha = 22;
   }
-  if(keyIsDown(83)){
-yraqueteoponente += 10;
-  }
-  yraqueteoponente = constrain(yraqueteoponente, 0, 310);
 }
-function bolinhaNaoFicaPresa(){
-    if (xbolinha - raio < 0){
-    xbolinha = 23
+
+function exibirTelaInicial() {
+  background(0);
+  fill(255);
+  textSize(32);
+  textAlign(CENTER, CENTER);
+  text("Escolha a dificuldade:", width / 2, height / 3);
+
+  textSize(24);
+  text("Pressione F para Fácil", width / 2, height / 2);
+  text("Pressione M para Médio", width / 2, height / 2 + 40);
+  text("Pressione D para Difícil", width / 2, height / 2 + 80);
+  text(`Objetivo: Chegar a ${pontosParaVitoria} pontos`, width / 2, height / 2 + 120);
+}
+
+function keyPressed() {
+  if (telaInicial) {
+    if (key === "F" || key === "f" || key === "M" || key === "m" || key === "D" || key === "d") {
+      telaInicial = false;
+      trilha.loop();
     }
+
+    if (key === "F" || key === "f") {
+      nivel = "facil";
+      xvelocidade = 8; // Velocidade padrão para "facil"
+      yvelocidade = 8;
+    } else if (key === "M" || key === "m") {
+      nivel = "medio";
+      xvelocidade = 10; // Velocidade aumentada para "medio"
+      yvelocidade = 10;
+    } else if (key === "D" || key === "d") {
+      nivel = "dificil";
+      xvelocidade = 12; // Velocidade aumentada para "dificil"
+      yvelocidade = 12;
+    }
+  } else if (jogoTerminou) {
+    if (key === "R" || key === "r") {
+      reiniciarJogo();
+    } else if (key === "M" || key === "m") {
+      voltarMenuInicial();
+    }
+  }
+}
+
+function reiniciarJogo() {
+  jogoTerminou = false;
+  meuspontos = 0;
+  pontosdooponente = 0;
+  xbolinha = 300;
+  ybolinha = 200;
+  xraquete = 6;
+  yraquete = 160;
+  xraqueteoponente = 583;
+  yraqueteoponente = 158;
+  trilha.loop();
+  loop(); // Reinicia o loop do jogo
+}
+
+function voltarMenuInicial() {
+  telaInicial = true;
+  trilha.stop();
+
+  // Reinicia todas as variáveis para os valores iniciais
+  xbolinha = 300;
+  ybolinha = 200;
+  nivel = "facil";
+  pontosParaVitoria = 3; // Mantém 3 pontos para vencer
+  pontoMarcado = false;
+  jogoTerminou = false;
+  xvelocidade = 8;
+  yvelocidade = 8;
+  xraqueteoponente = 583;
+  yraqueteoponente = 158;
+  comprimentoraqueteop = 11;
+  raquetealturaop = 90;
+  velocidadeyoponente = 0;
+  chancedeerrar = 0;
+  xraquete = 6;
+  yraquete = 160;
+  comprimentoraquete = 11;
+  raquetealtura = 90;
+  colidiu = false;
+  meuspontos = 0;
+  pontosdooponente = 0;
+
+  // Reinicia o loop do jogo
+  loop();
+}
+
+function exibirFimDeJogo() {
+  background(0);
+  fill(255);
+  textSize(32);
+  textAlign(CENTER, CENTER);
+  let vencedor = meuspontos >= pontosParaVitoria ? "Você venceu!" : "Oponente venceu!";
+  text(vencedor, width / 2, height / 2);
+  textSize(20);
+  text("Pressione R para Retry", width / 2, height / 2 + 40);
+  text("Pressione M para Menu Inicial", width / 2, height / 2 + 80);
+  jogoTerminou = true; // Define que o jogo terminou
 }
